@@ -490,41 +490,56 @@ const TEACH_CONTENT = {
 /* ─────────── Helper visual sub-components ─────────── */
 
 function ColumnAddition({ a, b, carry }) {
-  const aStr   = String(a).padStart(3, " ");
-  const bStr   = String(b).padStart(3, " ");
-  const ans    = a + b;
-  const onesA  = a % 10;
-  const onesB  = b % 10;
-  const onesSum = onesA + onesB;
+  const ans      = a + b;
+  const maxLen   = Math.max(String(a).length, String(b).length, String(ans).length);
+  const pad      = (n) => String(n).padStart(maxLen, " ").split("");
+  const aDigits  = pad(a);
+  const bDigits  = pad(b);
+  const ansDigits = pad(ans);
+  const onesSum  = (a % 10) + (b % 10);
   const carryVal = carry ? Math.floor(onesSum / 10) : 0;
 
-  const cellStyle = (highlight) => ({
+  // carry indicator sits above the tens column (index maxLen-2)
+  const carryDigits = Array(maxLen).fill("");
+  if (carry) carryDigits[maxLen - 2] = String(carryVal);
+
+  const OP_W = 36;
+  const cellStyle = (highlight, faded) => ({
     width: 40, height: 44, display:"flex", alignItems:"center", justifyContent:"center",
     fontFamily:"'Fredoka', sans-serif", fontSize:24, fontWeight:700,
     color: highlight ? "#6366f1" : "#1e293b",
     background: highlight ? "#6366f122" : "transparent",
     borderRadius: 8,
+    opacity: faded ? 0 : 1,
   });
+  const row = (digits, opSymbol, opColor, highlight) => (
+    <div style={{ display:"flex", gap:4, alignItems:"center" }}>
+      <div style={{ width:OP_W, height:44, display:"flex", alignItems:"center", justifyContent:"center",
+        fontFamily:"'Fredoka', sans-serif", fontSize:22, fontWeight:700, color: opColor || "transparent" }}>
+        {opSymbol || ""}
+      </div>
+      {digits.map((d, i) => <div key={i} style={cellStyle(highlight, d === " ")}>{d === " " ? "" : d}</div>)}
+    </div>
+  );
 
   return (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
       <div style={{ background:"rgba(255,255,255,0.7)", borderRadius:16, padding:"14px 20px", boxShadow:"0 2px 10px rgba(0,0,0,0.06)" }}>
         {carry && (
-          <div style={{ display:"flex", gap:4, marginBottom:2, justifyContent:"flex-end" }}>
-            <div style={{ ...cellStyle(false), fontSize:16, color:"#e11d48", fontWeight:700 }}>{carryVal}</div>
+          <div style={{ display:"flex", gap:4, alignItems:"center" }}>
+            <div style={{ width:OP_W }} />
+            {carryDigits.map((d, i) => (
+              <div key={i} style={{ width:40, height:24, display:"flex", alignItems:"center", justifyContent:"center",
+                fontFamily:"'Fredoka', sans-serif", fontSize:16, fontWeight:700, color:"#e11d48" }}>
+                {d}
+              </div>
+            ))}
           </div>
         )}
-        <div style={{ display:"flex", gap:4 }}>
-          {String(a).split("").map((d, i) => <div key={i} style={cellStyle(false)}>{d}</div>)}
-        </div>
-        <div style={{ display:"flex", gap:4, alignItems:"center" }}>
-          <div style={{ width:24, fontSize:22, fontWeight:700, color:"#6366f1", fontFamily:"'Fredoka', sans-serif" }}>+</div>
-          {String(b).split("").map((d, i) => <div key={i} style={cellStyle(false)}>{d}</div>)}
-        </div>
+        {row(aDigits, null, null, false)}
+        {row(bDigits, "+", "#6366f1", false)}
         <div style={{ width:"100%", height:2.5, background:"#6366f1", borderRadius:2, margin:"4px 0" }} />
-        <div style={{ display:"flex", gap:4 }}>
-          {String(ans).split("").map((d, i) => <div key={i} style={cellStyle(true)}>{d}</div>)}
-        </div>
+        {row(ansDigits, null, null, true)}
       </div>
       {carry && (
         <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:13, color:"#e11d48", fontWeight:600 }}>
@@ -536,28 +551,39 @@ function ColumnAddition({ a, b, carry }) {
 }
 
 function ColumnSubtraction({ a, b, borrow }) {
-  const ans   = a - b;
-  const cellStyle = (highlight) => ({
+  const ans     = a - b;
+  const maxLen  = Math.max(String(a).length, String(b).length, String(ans).length);
+  const pad     = (n) => String(n).padStart(maxLen, " ").split("");
+  const aDigits = pad(a);
+  const bDigits = pad(b);
+  const ansDigits = pad(ans);
+
+  const OP_W = 36;
+  const cellStyle = (highlight, faded) => ({
     width:40, height:44, display:"flex", alignItems:"center", justifyContent:"center",
     fontFamily:"'Fredoka', sans-serif", fontSize:24, fontWeight:700,
     color: highlight ? "#0ea5e9" : "#1e293b",
     background: highlight ? "#0ea5e922" : "transparent",
     borderRadius:8,
+    opacity: faded ? 0 : 1,
   });
+  const row = (digits, opSymbol, opColor, highlight) => (
+    <div style={{ display:"flex", gap:4, alignItems:"center" }}>
+      <div style={{ width:OP_W, height:44, display:"flex", alignItems:"center", justifyContent:"center",
+        fontFamily:"'Fredoka', sans-serif", fontSize:22, fontWeight:700, color: opColor || "transparent" }}>
+        {opSymbol || ""}
+      </div>
+      {digits.map((d, i) => <div key={i} style={cellStyle(highlight, d === " ")}>{d === " " ? "" : d}</div>)}
+    </div>
+  );
+
   return (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
       <div style={{ background:"rgba(255,255,255,0.7)", borderRadius:16, padding:"14px 20px", boxShadow:"0 2px 10px rgba(0,0,0,0.06)" }}>
-        <div style={{ display:"flex", gap:4 }}>
-          {String(a).split("").map((d, i) => <div key={i} style={cellStyle(false)}>{d}</div>)}
-        </div>
-        <div style={{ display:"flex", gap:4, alignItems:"center" }}>
-          <div style={{ width:24, fontSize:22, fontWeight:700, color:"#0ea5e9", fontFamily:"'Fredoka', sans-serif" }}>−</div>
-          {String(b).split("").map((d, i) => <div key={i} style={cellStyle(false)}>{d}</div>)}
-        </div>
+        {row(aDigits, null, null, false)}
+        {row(bDigits, "−", "#0ea5e9", false)}
         <div style={{ width:"100%", height:2.5, background:"#0ea5e9", borderRadius:2, margin:"4px 0" }} />
-        <div style={{ display:"flex", gap:4 }}>
-          {String(ans).split("").map((d, i) => <div key={i} style={cellStyle(true)}>{d}</div>)}
-        </div>
+        {row(ansDigits, null, null, true)}
       </div>
       {borrow && (
         <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:13, color:"#e11d48", fontWeight:600 }}>
