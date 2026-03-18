@@ -10,14 +10,14 @@ const COL_COLORS = {
 
 function Block({ type, color }) {
   if (type === "thousands") {
-    // 2×2 grid of hundreds blocks
+    // 2×2 grid of mini hundreds squares
     return (
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:2, padding:2,
-        border:`2px solid ${color}`, borderRadius:5, background:`${color}08` }}>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:1.5, padding:2,
+        border:`2px solid ${color}`, borderRadius:4, background:`${color}08` }}>
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:1 }}>
+          <div key={i} style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:0.5 }}>
             {Array.from({ length: 10 }).map((_, j) => (
-              <div key={j} style={{ width:4, height:4, borderRadius:1, background:color, opacity:0.7 }} />
+              <div key={j} style={{ width:2.5, height:2.5, borderRadius:0.5, background:color, opacity:0.7 }} />
             ))}
           </div>
         ))}
@@ -25,21 +25,23 @@ function Block({ type, color }) {
     );
   }
   if (type === "hundreds") {
+    // 10×10 square grid — compact and clearly square
     return (
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:1.5, padding:3,
-        border:`2px solid ${color}`, borderRadius:5, background:`${color}08` }}>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(10,1fr)", gap:0.8, padding:2,
+        border:`2px solid ${color}`, borderRadius:4, background:`${color}08` }}>
         {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i} style={{ width:5, height:5, borderRadius:1, background:color, opacity:0.7 }} />
+          <div key={i} style={{ width:2.5, height:2.5, borderRadius:0.5, background:color, opacity:0.7 }} />
         ))}
       </div>
     );
   }
   if (type === "tens") {
+    // Slim vertical rod of 10 squares
     return (
-      <div style={{ display:"flex", flexDirection:"column", gap:1.5, padding:"3px 5px",
-        border:`2px solid ${color}`, borderRadius:5, background:`${color}08` }}>
+      <div style={{ display:"flex", flexDirection:"column", gap:1, padding:"2px 3px",
+        border:`2px solid ${color}`, borderRadius:4, background:`${color}08` }}>
         {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} style={{ width:8, height:8, borderRadius:2, background:color, opacity:0.7 }} />
+          <div key={i} style={{ width:5, height:5, borderRadius:1, background:color, opacity:0.7 }} />
         ))}
       </div>
     );
@@ -47,7 +49,7 @@ function Block({ type, color }) {
   // ones / tenths / hundredths
   return (
     <div style={{
-      width:16, height:16, borderRadius:4, background:color, opacity:0.85,
+      width:13, height:13, borderRadius:3, background:color, opacity:0.85,
       border:`2px solid ${color}`,
     }} />
   );
@@ -103,8 +105,8 @@ export default function PlaceValueDisplay({ number, askCol, qType, color }) {
                 color: isTarget ? c : "#94a3b8", textTransform:"uppercase", letterSpacing:0.5,
               }}>{name}</div>
 
-              {/* Dienes blocks — show up to 9 */}
-              <div style={{ display:"flex", flexDirection:"column", gap:2, alignItems:"center", minHeight:30 }}>
+              {/* Dienes blocks — show up to 9, wrap to avoid overflow */}
+              <div style={{ display:"flex", flexWrap:"wrap", gap:2, alignItems:"flex-end", justifyContent:"center", maxWidth:90, minHeight:16 }}>
                 {Array.from({ length: Math.min(digit, 9) }).map((_, i) => (
                   <Block key={i} type={name} color={c} />
                 ))}
