@@ -34,7 +34,8 @@ function getQuestionText(opId, problem) {
     return "How many parts are shaded?";
   }
   if (opId === "time") {
-    if (problem.askType === "hour")   return "What is the HOUR shown on the clock?";
+    if (problem.askType === "readtime") return "What time does the clock show?";
+    if (problem.askType === "hour")     return "What is the HOUR shown on the clock?";
     return "How many MINUTES does the clock show?";
   }
   return null;
@@ -76,6 +77,7 @@ function getHelpMessage(opId, problem) {
   }
   if (opId === "time") {
     const timeStr = timeLabel(problem.hours, problem.minutes);
+    if (problem.askType === "readtime") return `The time is ${ans} (${timeStr}). Type H:MM!`;
     return problem.askType === "hour"
       ? `The hour is ${ans}. The clock shows ${timeStr}.`
       : `The minutes are ${ans}. The clock shows ${timeStr}.`;
@@ -150,20 +152,28 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
     setTimeout(() => setBursts(prev => prev.filter(b => b.id !== id)), 700);
   }
 
+  const isReadTime = opId === "time" && problem.askType === "readtime";
+
   function handlePad(key) {
     if (feedback) return;
     if (key === "backspace") {
       setUserInput(prev => prev.slice(0, -1));
     } else if (key === "submit") {
       checkAnswer();
-    } else if (userInput.length < 4) {
+    } else if (key === ":") {
+      if (isReadTime && !userInput.includes(":") && userInput.length > 0 && userInput.length <= 2) {
+        setUserInput(prev => prev + ":");
+      }
+    } else if (userInput.length < (isReadTime ? 5 : 4)) {
       setUserInput(prev => prev + key);
     }
   }
 
   function checkAnswer() {
     if (!userInput || feedback) return;
-    const correct = parseInt(userInput) === problem.answer;
+    const correct = isReadTime
+      ? userInput === problem.answer
+      : parseInt(userInput) === problem.answer;
 
     if (correct) {
       addBurst();
@@ -184,7 +194,7 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
 
     setResults(prev => [...prev, {
       problem, correct,
-      userAnswer: parseInt(userInput),
+      userAnswer: isReadTime ? userInput : parseInt(userInput),
       display: isCustomDisplay ? getQuestionText(opId, problem) : null,
       sym,
     }]);
@@ -402,7 +412,7 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
           )}
         </div>
 
-        <NumberPad onPress={handlePad} disabled={!!feedback} />
+        <NumberPad onPress={handlePad} disabled={!!feedback} showColon={isReadTime} />
       </div>
 
       <style>{`
@@ -416,15 +426,16 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
 }
 
 function AnswerBox({ feedback, value }) {
+  const isWide = value.includes(":");
   return (
     <div data-answer-box style={{
-      minWidth:76, height:60, borderRadius:16,
+      minWidth: isWide ? 110 : 76, height:60, borderRadius:16,
       background: feedback === "correct" ? "#dcfce7" : feedback === "wrong" ? "#fee2e2" : "#f1f5f9",
       border: `3px dashed ${feedback === "correct" ? "#22c55e" : feedback === "wrong" ? "#ef4444" : "#cbd5e1"}`,
       display:"flex", alignItems:"center", justifyContent:"center",
-      fontSize:38, fontWeight:700,
+      fontSize: isWide ? 30 : 38, fontWeight:700,
       color: feedback === "correct" ? "#16a34a" : feedback === "wrong" ? "#dc2626" : "#334155",
-      transition:"all 0.3s",
+      transition:"all 0.3s", letterSpacing: isWide ? 2 : 0,
     }}>
       {value || <span style={{ width:3, height:32, background:"#94a3b8", borderRadius:2, animation:"blink 1s step-end infinite" }} />}
     </div>

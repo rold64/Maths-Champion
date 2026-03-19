@@ -11,6 +11,12 @@ import NumberBond              from "../components/visuals/NumberBond.jsx";
 import PlaceValueDisplay       from "../components/visuals/PlaceValueDisplay.jsx";
 import ClockFace               from "../components/visuals/ClockFace.jsx";
 import AnimatedAddition        from "../components/visuals/AnimatedAddition.jsx";
+import AnimatedColumnAddition  from "../components/visuals/AnimatedColumnAddition.jsx";
+import AnimatedSubtraction     from "../components/visuals/AnimatedSubtraction.jsx";
+import AnimatedMultiplication  from "../components/visuals/AnimatedMultiplication.jsx";
+import AnimatedDivision        from "../components/visuals/AnimatedDivision.jsx";
+import AnimatedAddSubFamily    from "../components/visuals/AnimatedAddSubFamily.jsx";
+import AnimatedMulDivFamily    from "../components/visuals/AnimatedMulDivFamily.jsx";
 
 /* ─────────────────── Teaching content ─────────────────── */
 
@@ -44,6 +50,11 @@ const TEACH_CONTENT = {
       title: "Adding with a Number Line",
       text: "The number line shows your journey. The arrow jumps forward by the number you are adding. Watch how 8 + 4 works!",
       visual: () => <NumberLine a={8} b={4} operation="addition" color="#6366f1" />,
+    },
+    {
+      title: "Column Method in Action!",
+      text: "Watch how 28 + 35 works step by step using the column method. Ones first, then carry!",
+      visual: () => <AnimatedColumnAddition color="#6366f1" />,
     },
     {
       title: "Column Addition — No Carrying",
@@ -86,6 +97,11 @@ const TEACH_CONTENT = {
       visual: () => <NumberLine a={9} b={4} operation="subtraction" color="#0ea5e9" />,
     },
     {
+      title: "Watch It Happen!",
+      text: "See how 13 − 5 works on a number line. Watch the jump back — then try it yourself!",
+      visual: () => <AnimatedSubtraction color="#0ea5e9" />,
+    },
+    {
       title: "Column Subtraction — No Borrowing",
       text: "Write the bigger number on top. Subtract the ones, then the tens. Always work from right to left!",
       visual: () => <ColumnSubtraction a={57} b={23} borrow={false} />,
@@ -121,6 +137,11 @@ const TEACH_CONTENT = {
       title: "Repeated Addition",
       text: "3 × 5 is the same as 5 + 5 + 5. Count the dots: each row has 5, and there are 3 rows!",
       visual: () => <MultiplicationDots a={3} b={5} color="#f59e0b" />,
+    },
+    {
+      title: "Watch Groups Fill Up!",
+      text: "See 3 × 4 come to life — watch each group of 4 appear one at a time!",
+      visual: () => <AnimatedMultiplication color="#f59e0b" />,
     },
     {
       title: "The Order Doesn't Matter!",
@@ -161,6 +182,11 @@ const TEACH_CONTENT = {
       title: "Sharing into Groups",
       text: "Here 20 ÷ 4 = 5. We put 20 dots into groups of 4. Count the groups — there are 5! That's the answer.",
       visual: () => <DivisionDots total={20} divisor={4} color="#10b981" />,
+    },
+    {
+      title: "Watch the Sharing!",
+      text: "See 12 ÷ 3 in action — watch the dots being shared out fairly into 3 groups!",
+      visual: () => <AnimatedDivision color="#10b981" />,
     },
     {
       title: "Division is the Opposite of Multiplication!",
@@ -210,6 +236,11 @@ const TEACH_CONTENT = {
           colorB="#0ea5e9"
         />
       ),
+    },
+    {
+      title: "Watch the Family Unfold!",
+      text: "See how 3, 5 and 8 make four different facts — all from the same family!",
+      visual: () => <AnimatedAddSubFamily />,
     },
     {
       title: "Subtraction Undoes Addition",
@@ -264,6 +295,11 @@ const TEACH_CONTENT = {
           colorB="#10b981"
         />
       ),
+    },
+    {
+      title: "Watch the Family Unfold!",
+      text: "See how 3, 4 and 12 make four different facts — all from the same family!",
+      visual: () => <AnimatedMulDivFamily />,
     },
     {
       title: "Division Undoes Multiplication",

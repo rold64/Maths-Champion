@@ -191,13 +191,17 @@ export function generateProblem(opId, lvlConfig, prevProblem = null) {
       else if (timeType === "five")    minutes = randomChoice([0,5,10,15,20,25,30,35,40,45,50,55]);
       else                             minutes = randomInt(0, 59);
 
-      // For basic/quarter: ask hour or minutes
-      // For five/full: ask minutes (more educational challenge)
-      const askType = timeType === "five" || timeType === "full"
-        ? randomChoice(["hour", "minute"])
-        : randomChoice(["hour", "minute"]);
+      // ~30% chance of "readtime" (no hint — just "What time does the clock show?")
+      const askTypeOptions = Math.random() < 0.3
+        ? ["readtime"]
+        : ["hour", "minute"];
+      const askType = randomChoice(askTypeOptions);
 
-      const answer = askType === "hour" ? hours : minutes;
+      const answer = askType === "readtime"
+        ? `${hours}:${String(minutes).padStart(2, "0")}`
+        : askType === "hour"
+          ? hours
+          : minutes;
       return { hours, minutes, askType, answer, a: hours, b: minutes, displayType: "time", timeType };
     }
 

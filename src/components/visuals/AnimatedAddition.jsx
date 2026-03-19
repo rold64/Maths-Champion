@@ -22,9 +22,9 @@ const TICKS = [0, 5, 10, 15, A, ANS].filter((v,i,a)=>a.indexOf(v)===i);
 
 // Each stage: how long before auto-advancing (ms), and caption
 const STAGES = [
-  { ms: 1600, caption: `Start at ${A}` },
-  { ms: 2600, caption: `Jump forward ${B}...` },
-  { ms: 1800, caption: `...land on ${ANS}!` },
+  { ms: 2400, caption: `Start at ${A}` },
+  { ms: 3500, caption: `Jump forward ${B}...` },
+  { ms: 2800, caption: `...land on ${ANS}!` },
   { ms: 0,    caption: `${A} + ${B} = ${ANS} ✓` },
 ];
 
