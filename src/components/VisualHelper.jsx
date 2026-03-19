@@ -97,7 +97,12 @@ export default function VisualHelper({ opId, problem, op }) {
               <span style={{ fontSize:30, fontWeight:700, color:"#94a3b8", alignSelf:"center" }}>+</span>
               <DotGroup count={b} color={op.dotColorB} label={b} />
             </div>
-          ) : null}
+          ) : (
+            <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:14, fontWeight:500,
+              color:"#94a3b8", textAlign:"center", padding:"6px 0" }}>
+              Count on {b} from {a}
+            </div>
+          )}
         </div>
       );
 
@@ -130,7 +135,12 @@ export default function VisualHelper({ opId, problem, op }) {
                 <span style={{ color:op.dotColorB, opacity:0.5 }}>● remove</span>
               </div>
             </div>
-          ) : null}
+          ) : (
+            <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:14, fontWeight:500,
+              color:"#94a3b8", textAlign:"center", padding:"6px 0" }}>
+              Count back {b} from {a}
+            </div>
+          )}
         </div>
       );
 
