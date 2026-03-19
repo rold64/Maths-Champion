@@ -10,6 +10,7 @@ import FractionBar             from "../components/visuals/FractionBar.jsx";
 import NumberBond              from "../components/visuals/NumberBond.jsx";
 import PlaceValueDisplay       from "../components/visuals/PlaceValueDisplay.jsx";
 import ClockFace               from "../components/visuals/ClockFace.jsx";
+import AnimatedAddition        from "../components/visuals/AnimatedAddition.jsx";
 
 /* ─────────────────── Teaching content ─────────────────── */
 
@@ -33,6 +34,11 @@ const TEACH_CONTENT = {
       title: "Count On!",
       text: "Start with the bigger number and count on. For 5 + 3, start at 5 and count on 3 steps: 6, 7, 8!",
       visual: () => <NumberLine a={5} b={3} operation="addition" color="#6366f1" />,
+    },
+    {
+      title: "Watch It Happen!",
+      text: "See how 8 + 5 works on a number line. Watch the jump — then try it yourself!",
+      visual: () => <AnimatedAddition color="#6366f1" />,
     },
     {
       title: "Adding with a Number Line",
