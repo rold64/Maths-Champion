@@ -1,5 +1,22 @@
 export default function MultiplicationDots({ a, b, color }) {
-  if (a * b > 60) return null;
+  if (a * b > 60) return (
+    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4, marginBottom:12 }}>
+      <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:14, fontWeight:500, color:"#94a3b8" }}>
+        {a} groups of {b}
+      </div>
+      <div style={{
+        background:"rgba(255,255,255,0.6)", borderRadius:14, padding:"12px 20px",
+        textAlign:"center", boxShadow:`0 2px 10px ${color}22`,
+      }}>
+        <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:16, fontWeight:600, color, marginBottom:4 }}>
+          {b} + {b} + {b}… ({a} times)
+        </div>
+        <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:12, color:"#94a3b8" }}>
+          Count up in {b}s, {a} times
+        </div>
+      </div>
+    </div>
+  );
   return (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4, marginBottom:12 }}>
       <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:14, fontWeight:500, color:"#94a3b8", marginBottom:2 }}>

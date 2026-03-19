@@ -1,6 +1,23 @@
 export default function DivisionDots({ total, divisor, color }) {
   const groups = total / divisor;
-  if (total > 60) return null;
+  if (total > 60) return (
+    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4, marginBottom:12 }}>
+      <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:14, fontWeight:500, color:"#94a3b8" }}>
+        {total} shared into groups of {divisor}
+      </div>
+      <div style={{
+        background:"rgba(255,255,255,0.6)", borderRadius:14, padding:"12px 20px",
+        textAlign:"center", boxShadow:`0 2px 10px ${color}22`,
+      }}>
+        <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:16, fontWeight:600, color, marginBottom:4 }}>
+          {divisor} × ? = {total}
+        </div>
+        <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:12, color:"#94a3b8" }}>
+          Which number times {divisor} makes {total}?
+        </div>
+      </div>
+    </div>
+  );
   return (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4, marginBottom:12 }}>
       <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:14, fontWeight:500, color:"#94a3b8", marginBottom:2 }}>
