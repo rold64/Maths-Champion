@@ -1,4 +1,12 @@
 // NumberLine: shows addition (jump forward) or subtraction (jump back) on a number line
+
+// "Nice" tick intervals — avoids overcrowding (1, 2, 5, 10, 20, 25, 50)
+function niceInterval(max) {
+  const rough = max / 8;
+  const nice  = [1, 2, 5, 10, 20, 25, 50];
+  return nice.find(n => n >= rough) || 50;
+}
+
 export default function NumberLine({ a, b, operation, color }) {
   const answer = operation === "addition" ? a + b : a - b;
   const end    = answer;
@@ -8,28 +16,36 @@ export default function NumberLine({ a, b, operation, color }) {
   const max    = Math.max(rawMax, 12);
 
   const svgW  = 300;
-  const svgH  = 80;
+  const svgH  = 85;
   const padL  = 20;
   const padR  = 20;
-  const lineY = 50;
+  const lineY = 54;
   const lineW = svgW - padL - padR;
   const step  = lineW / max;
 
   function xOf(n) { return padL + n * step; }
 
-  const tickInterval = Math.max(1, Math.floor(max / 10));
+  const tickInterval = niceInterval(max);
   const keyPositions = [0, a, end].filter((v, i, arr) => arr.indexOf(v) === i);
 
-  // Suppress a regular tick label if it's within 14px of any key position label
+  // If start and end key labels are too close, stagger the start label above the line
+  const startEndClose = Math.abs(xOf(a) - xOf(end)) < 20;
+
+  // Suppress a regular tick label if it's within 14px of any key position
   function tooCloseToKey(n) {
     return keyPositions.some(k => k !== n && Math.abs(xOf(k) - xOf(n)) < 14);
   }
 
-  const x1   = xOf(a);
-  const x2   = xOf(end);
-  const arcH = 28;
-  const mx   = (x1 + x2) / 2;
+  // Key label y: start goes above the line when too close to end, otherwise below
+  function keyLabelY(n) {
+    if (startEndClose && n === a) return lineY - 22;
+    return lineY + 18;
+  }
 
+  const x1      = xOf(a);
+  const x2      = xOf(end);
+  const arcH    = 26;
+  const mx      = (x1 + x2) / 2;
   const arcPath = `M ${x1} ${lineY} Q ${mx} ${lineY - arcH} ${x2} ${lineY}`;
 
   return (
@@ -42,11 +58,12 @@ export default function NumberLine({ a, b, operation, color }) {
           {/* Base line */}
           <line x1={padL} y1={lineY} x2={svgW - padR} y2={lineY} stroke="#cbd5e1" strokeWidth="2" />
 
-          {/* Tick marks and labels */}
+          {/* Tick marks and labels — only drawn at labeled positions */}
           {Array.from({ length: max + 1 }).map((_, n) => {
-            const x     = xOf(n);
-            const isKey = keyPositions.includes(n);
+            const x         = xOf(n);
+            const isKey     = keyPositions.includes(n);
             const showLabel = isKey || (n % tickInterval === 0 && !tooCloseToKey(n));
+            if (!showLabel) return null;
             return (
               <g key={n}>
                 <line
@@ -55,15 +72,14 @@ export default function NumberLine({ a, b, operation, color }) {
                   stroke={isKey ? color : "#94a3b8"}
                   strokeWidth={isKey ? 2.5 : 1}
                 />
-                {showLabel && (
-                  <text x={x} y={lineY + 18} textAnchor="middle"
-                    fontFamily="Fredoka, sans-serif"
-                    fontSize={isKey ? 13 : 10}
-                    fontWeight={isKey ? "700" : "400"}
-                    fill={isKey ? color : "#94a3b8"}>
-                    {n}
-                  </text>
-                )}
+                <text x={x} y={isKey ? keyLabelY(n) : lineY + 18}
+                  textAnchor="middle"
+                  fontFamily="Fredoka, sans-serif"
+                  fontSize={isKey ? 13 : 10}
+                  fontWeight={isKey ? "700" : "400"}
+                  fill={isKey ? color : "#94a3b8"}>
+                  {n}
+                </text>
               </g>
             );
           })}

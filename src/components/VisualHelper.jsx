@@ -89,8 +89,8 @@ export default function VisualHelper({ opId, problem, op }) {
       if (a + b > 30) return null;
       return (
         <div style={{ marginBottom:12 }}>
-          {/* Number line for larger numbers, dots for small */}
-          {a + b > 10 ? (
+          {/* Number line for larger sums with jumps ≥3; dots for small or tiny jumps */}
+          {a + b > 10 && b >= 3 ? (
             <NumberLine a={a} b={b} operation="addition" color={op.dotColorA} />
           ) : (
             <div style={{ display:"flex", justifyContent:"center", alignItems:"flex-end", gap:16, flexWrap:"wrap" }}>
@@ -106,7 +106,7 @@ export default function VisualHelper({ opId, problem, op }) {
       if (a > 30) return null;
       return (
         <div style={{ marginBottom:12 }}>
-          {a > 10 ? (
+          {a > 10 && b >= 3 ? (
             <NumberLine a={a} b={b} operation="subtraction" color={op.dotColorA} />
           ) : (
             <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:6 }}>
