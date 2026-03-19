@@ -48,6 +48,14 @@ export default function NumberLine({ a, b, operation, color }) {
   const mx      = (x1 + x2) / 2;
   const arcPath = `M ${x1} ${lineY} Q ${mx} ${lineY - arcH} ${x2} ${lineY}`;
 
+  // Mid-arc directional arrowhead — at t=0.5 the bezier tangent is horizontal
+  const arcMidY  = lineY - arcH / 2;
+  const isAddition = operation === "addition";
+  // Right-pointing for addition, left-pointing for subtraction
+  const arrowPoints = isAddition
+    ? `${mx + 6},${arcMidY} ${mx - 3},${arcMidY - 4} ${mx - 3},${arcMidY + 4}`
+    : `${mx - 6},${arcMidY} ${mx + 3},${arcMidY - 4} ${mx + 3},${arcMidY + 4}`;
+
   return (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", marginBottom:12 }}>
       <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:13, fontWeight:500, color:"#94a3b8", marginBottom:4 }}>
@@ -86,11 +94,8 @@ export default function NumberLine({ a, b, operation, color }) {
 
           {/* Jump arc */}
           <path d={arcPath} fill="none" stroke={color} strokeWidth="2.5" />
-          {/* Arrowhead at end */}
-          <polygon
-            points={`${x2},${lineY} ${x2 - 6},${lineY - 8} ${x2 + 6},${lineY - 8}`}
-            fill={color}
-          />
+          {/* Mid-arc directional arrowhead — shows direction of travel */}
+          <polygon points={arrowPoints} fill={color} />
 
           {/* Start dot */}
           <circle cx={x1} cy={lineY} r="6" fill={color} opacity="0.5" />
