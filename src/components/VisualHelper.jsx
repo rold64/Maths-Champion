@@ -86,29 +86,27 @@ export default function VisualHelper({ opId, problem, op }) {
   // ── Standard operations ────────────────────────────────
   switch (opId) {
     case "addition":
-      if (a + b > 30) return null;
       return (
         <div style={{ marginBottom:12 }}>
-          {/* Number line for larger sums with jumps ≥3; dots for small or tiny jumps */}
+          {/* Number line for larger sums with jumps ≥3; dots for small sums; nothing for huge dot counts */}
           {a + b > 10 && b >= 3 ? (
             <NumberLine a={a} b={b} operation="addition" color={op.dotColorA} />
-          ) : (
+          ) : a + b <= 30 ? (
             <div style={{ display:"flex", justifyContent:"center", alignItems:"flex-end", gap:16, flexWrap:"wrap" }}>
               <DotGroup count={a} color={op.dotColorA} label={a} />
               <span style={{ fontSize:30, fontWeight:700, color:"#94a3b8", alignSelf:"center" }}>+</span>
               <DotGroup count={b} color={op.dotColorB} label={b} />
             </div>
-          )}
+          ) : null}
         </div>
       );
 
     case "subtraction":
-      if (a > 30) return null;
       return (
         <div style={{ marginBottom:12 }}>
           {a > 10 && b >= 3 ? (
             <NumberLine a={a} b={b} operation="subtraction" color={op.dotColorA} />
-          ) : (
+          ) : a <= 30 ? (
             <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:6 }}>
               <div style={{ fontFamily:"'Fredoka', sans-serif", fontSize:14, fontWeight:500, color:"#94a3b8" }}>
                 Start with {a}, take away {b}
@@ -132,7 +130,7 @@ export default function VisualHelper({ opId, problem, op }) {
                 <span style={{ color:op.dotColorB, opacity:0.5 }}>● remove</span>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
       );
 
