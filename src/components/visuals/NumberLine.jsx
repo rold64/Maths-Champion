@@ -31,9 +31,9 @@ export default function NumberLine({ a, b, operation, color }) {
   // If start and end key labels are too close, stagger the start label above the line
   const startEndClose = Math.abs(xOf(a) - xOf(end)) < 20;
 
-  // Suppress a regular tick label if it's within 14px of any key position
+  // Suppress a regular tick label if it's within 20px of any key position
   function tooCloseToKey(n) {
-    return keyPositions.some(k => k !== n && Math.abs(xOf(k) - xOf(n)) < 14);
+    return keyPositions.some(k => k !== n && Math.abs(xOf(k) - xOf(n)) < 20);
   }
 
   // Key label y: start goes above the line when too close to end, otherwise below

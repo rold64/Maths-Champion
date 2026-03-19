@@ -27,10 +27,10 @@ function Block({ type, color }) {
   if (type === "hundreds") {
     // 10×10 square grid — compact and clearly square
     return (
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(10,1fr)", gap:1.5, padding:3,
-        border:`2px solid ${color}`, borderRadius:4, background:`${color}08` }}>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(10, 8px)", gap:3, padding:3,
+        borderRadius:4, background:`${color}08` }}>
         {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i} style={{ width:4, height:4, borderRadius:1, background:color, opacity:0.7 }} />
+          <div key={i} style={{ width:8, height:8, borderRadius:2, background:color, opacity:0.7 }} />
         ))}
       </div>
     );
@@ -106,7 +106,7 @@ export default function PlaceValueDisplay({ number, askCol, qType, color }) {
               }}>{name}</div>
 
               {/* Dienes blocks — show up to 9, wrap to avoid overflow */}
-              <div style={{ display:"flex", flexWrap:"wrap", gap:2, alignItems:"flex-end", justifyContent:"center", maxWidth:90, minHeight:16 }}>
+              <div style={{ display:"flex", flexWrap:"wrap", gap:2, alignItems:"flex-end", justifyContent:"center", minHeight:16 }}>
                 {Array.from({ length: Math.min(digit, 9) }).map((_, i) => (
                   <Block key={i} type={name} color={c} />
                 ))}
