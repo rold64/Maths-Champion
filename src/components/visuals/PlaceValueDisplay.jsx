@@ -27,10 +27,10 @@ function Block({ type, color }) {
   if (type === "hundreds") {
     // 10×10 square grid — compact and clearly square
     return (
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(10,1fr)", gap:0.8, padding:2,
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(10,1fr)", gap:1.5, padding:3,
         border:`2px solid ${color}`, borderRadius:4, background:`${color}08` }}>
         {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i} style={{ width:2.5, height:2.5, borderRadius:0.5, background:color, opacity:0.7 }} />
+          <div key={i} style={{ width:4, height:4, borderRadius:1, background:color, opacity:0.7 }} />
         ))}
       </div>
     );
