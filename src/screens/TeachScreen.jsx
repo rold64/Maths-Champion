@@ -321,8 +321,8 @@ const TEACH_CONTENT = {
   placevalue: [
     {
       title: "Every Digit has a Place",
-      text: "In the number 456, each digit has a different value depending on its PLACE. The 4 means 400, the 5 means 50, and the 6 means 6.",
-      visual: () => <PlaceValueDisplay number={456} askCol="hundreds" qType="value" color="#7c3aed" />,
+      text: "In the number 156, each digit has a different value depending on its PLACE. The 1 means 100, the 5 means 50, and the 6 means 6.",
+      visual: () => <PlaceValueDisplay number={156} askCol="hundreds" qType="value" color="#7c3aed" />,
     },
     {
       title: "Ones, Tens, Hundreds",
