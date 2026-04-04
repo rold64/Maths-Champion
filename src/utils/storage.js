@@ -44,3 +44,27 @@ export function getRecord(opId, levelIdx) {
 export function getAllRecords() {
   return load();
 }
+
+export function getCoins() {
+  const data = load();
+  return data.coins || 0;
+}
+
+export function addCoins(amount) {
+  const data = load();
+  data.coins = (data.coins || 0) + amount;
+  save(data);
+  return data.coins;
+}
+
+export function getDiamonds() {
+  const data = load();
+  return data.diamonds || 0;
+}
+
+export function addDiamonds(amount) {
+  const data = load();
+  data.diamonds = (data.diamonds || 0) + amount;
+  save(data);
+  return data.diamonds;
+}

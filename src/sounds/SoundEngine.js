@@ -67,6 +67,15 @@ const SoundEngine = (() => {
       playTone(700, 0.08, "sine", 0.1, 0);
       playTone(900, 0.12, "sine", 0.12, 0.07);
     },
+    coin() {
+      playTone(1200, 0.08, "sine", 0.12, 0);
+      playTone(1600, 0.12, "sine", 0.14, 0.06);
+    },
+    diamond() {
+      playTone(1400, 0.1,  "sine", 0.14, 0);
+      playTone(1800, 0.1,  "sine", 0.16, 0.08);
+      playTone(2200, 0.18, "sine", 0.18, 0.16);
+    },
   };
 })();
 

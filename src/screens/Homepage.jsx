@@ -1,4 +1,5 @@
 import { OPERATIONS } from "../data/operations.js";
+import { getCoins, getDiamonds } from "../utils/storage.js";
 import SoundEngine from "../sounds/SoundEngine.js";
 
 const FONT_LINK = "https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap";
@@ -31,9 +32,31 @@ export default function Homepage({ onPractice, onLearn }) {
           background:"linear-gradient(135deg, #f59e0b, #ec4899, #6366f1, #10b981)",
           WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
         }}>Maths Champion</h1>
-        <p style={{ color:"#64748b", fontSize:18, margin:"0 0 28px", fontWeight:500 }}>
+        <p style={{ color:"#64748b", fontSize:18, margin:"0 0 20px", fontWeight:500 }}>
           Choose your challenge and become a superstar!
         </p>
+
+        {(getCoins() > 0 || getDiamonds() > 0) && (
+          <div style={{
+            background:"rgba(255,255,255,0.7)", backdropFilter:"blur(6px)",
+            borderRadius:16, padding:"10px 20px", marginBottom:22,
+            display:"inline-flex", alignItems:"center", gap:14,
+            border:"2px solid rgba(245,158,11,0.2)", boxShadow:"0 4px 12px rgba(245,158,11,0.08)",
+          }}>
+            {getCoins() > 0 && (
+              <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                <span style={{ fontSize:26 }}>🪙</span>
+                <span style={{ fontSize:24, fontWeight:700, color:"#d97706" }}>{getCoins()}</span>
+              </div>
+            )}
+            {getDiamonds() > 0 && (
+              <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                <span style={{ fontSize:24 }}>💎</span>
+                <span style={{ fontSize:24, fontWeight:700, color:"#6366f1" }}>{getDiamonds()}</span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Core 4 operations */}
         <SectionLabel>⚡ Core Maths</SectionLabel>

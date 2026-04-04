@@ -2,15 +2,20 @@ import { useState, useEffect, useRef } from "react";
 import { OPERATIONS }           from "../data/operations.js";
 import { LEVELS }               from "../data/levels.js";
 import { generateProblem, getSymbol, formatTime, timeLabel } from "../utils/generateProblem.js";
-import { saveResult, getRecord } from "../utils/storage.js";
+import { saveResult, getRecord, addCoins, getCoins, addDiamonds, getDiamonds } from "../utils/storage.js";
 import { getSuggestion, suggestionMessage } from "../utils/adaptive.js";
 import SoundEngine               from "../sounds/SoundEngine.js";
 import StarBurst                 from "../components/StarBurst.jsx";
+import CoinBurst                 from "../components/CoinBurst.jsx";
+import DiamondBurst              from "../components/DiamondBurst.jsx";
 import NumberPad                 from "../components/NumberPad.jsx";
 import ProgressBar               from "../components/ProgressBar.jsx";
 import VisualHelper              from "../components/VisualHelper.jsx";
 
 const TOTAL_ROUNDS = 10;
+const COINS_PER_LEVEL = [1, 2, 3, 5];
+const STREAK_BONUS = 2;
+const DIAMONDS_FOR_PERFECT = [1, 1, 2, 3]; // per level on 10/10
 
 // Returns a human-readable question string for non-standard modes
 function getQuestionText(opId, problem) {
@@ -125,12 +130,18 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
   const [round,      setRound]      = useState(0);
   const [results,    setResults]    = useState([]);
   const [bursts,     setBursts]     = useState([]);
-  const [showVisual, setShowVisual] = useState(true);
-  const [done,       setDone]       = useState(false);
-  const [suggestion, setSuggestion] = useState(null);
+  const [showVisual,  setShowVisual]  = useState(true);
+  const [done,        setDone]        = useState(false);
+  const [suggestion,  setSuggestion]  = useState(null);
+  const [coinsEarned,    setCoinsEarned]    = useState(0);
+  const [coinBursts,     setCoinBursts]     = useState([]);
+  const [diamondsEarned, setDiamondsEarned] = useState(0);
+  const [diamondBursts,  setDiamondBursts]  = useState([]);
 
-  const burstId      = useRef(0);
-  const feedbackMsg  = useRef("");
+  const burstId        = useRef(0);
+  const coinBurstId    = useRef(0);
+  const diamondBurstId = useRef(0);
+  const feedbackMsg    = useRef("");
   const prevProblem  = useRef(null);
 
   const isCustomDisplay = ["numbonds","placevalue","fractions","time"].includes(opId);
@@ -150,6 +161,34 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
     const y   = rect ? rect.top : window.innerHeight / 2;
     setBursts(prev => [...prev, { id, x, y }]);
     setTimeout(() => setBursts(prev => prev.filter(b => b.id !== id)), 700);
+  }
+
+  function addCoinBurst(amount) {
+    const id  = coinBurstId.current++;
+    const el  = document.querySelector("[data-answer-box]");
+    const rect = el?.getBoundingClientRect?.();
+    const x   = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const y   = rect ? rect.top : window.innerHeight / 2;
+    const counter = document.querySelector("[data-coin-counter]");
+    const cRect = counter?.getBoundingClientRect?.();
+    const tx = cRect ? cRect.left + cRect.width / 2 : window.innerWidth - 60;
+    const ty = cRect ? cRect.top + cRect.height / 2 : 30;
+    setCoinBursts(prev => [...prev, { id, x, y, tx, ty, amount }]);
+    setTimeout(() => setCoinBursts(prev => prev.filter(b => b.id !== id)), 1200);
+  }
+
+  function addDiamondBurst(amount) {
+    const id  = diamondBurstId.current++;
+    const el  = document.querySelector("[data-answer-box]");
+    const rect = el?.getBoundingClientRect?.();
+    const x   = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const y   = rect ? rect.top : window.innerHeight / 2;
+    const counter = document.querySelector("[data-diamond-counter]");
+    const cRect = counter?.getBoundingClientRect?.();
+    const tx = cRect ? cRect.left + cRect.width / 2 : window.innerWidth - 40;
+    const ty = cRect ? cRect.top + cRect.height / 2 : 30;
+    setDiamondBursts(prev => [...prev, { id, x, y, tx, ty, amount }]);
+    setTimeout(() => setDiamondBursts(prev => prev.filter(b => b.id !== id)), 1400);
   }
 
   const isReadTime = opId === "time" && problem.askType === "readtime";
@@ -177,6 +216,12 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
 
     if (correct) {
       addBurst();
+      const newStreak = streak + 1;
+      const base = COINS_PER_LEVEL[levelIdx] || 1;
+      const bonus = (newStreak >= 3 && newStreak % 3 === 0) ? STREAK_BONUS : 0;
+      const earned = base + bonus;
+      setCoinsEarned(prev => prev + earned);
+      setTimeout(() => { SoundEngine.coin(); addCoinBurst(earned); }, 150);
       setScore(s => s + 1);
       setStreak(s => {
         const next = s + 1;
@@ -217,6 +262,13 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
     if (done) {
       SoundEngine.victory();
       const saved = saveResult(opId, levelIdx, score, TOTAL_ROUNDS);
+      if (coinsEarned > 0) addCoins(coinsEarned);
+      if (score === TOTAL_ROUNDS) {
+        const diamonds = DIAMONDS_FOR_PERFECT[levelIdx] || 1;
+        setDiamondsEarned(diamonds);
+        addDiamonds(diamonds);
+        setTimeout(() => SoundEngine.diamond(), 600);
+      }
       const sugg  = getSuggestion(opId, levelIdx, saved.recentAccuracy, lvlCount);
       setSuggestion(sugg);
     }
@@ -248,6 +300,14 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
               <div key={i} style={{ fontSize:18, opacity: i < score ? 1 : 0.2, animation: i < score ? `popIn 0.3s ease ${i*0.06}s both` : "none" }}>⭐</div>
             ))}
           </div>
+
+          {coinsEarned > 0 && (
+            <CoinTally coinsEarned={coinsEarned} />
+          )}
+
+          {diamondsEarned > 0 && (
+            <DiamondTally diamondsEarned={diamondsEarned} />
+          )}
 
           {bestStreak > 1 && (
             <div style={{ background:"rgba(255,255,255,0.7)", borderRadius:14, padding:"7px 14px", display:"inline-block", marginBottom:12 }}>
@@ -297,7 +357,7 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
 
           <div style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap" }}>
             <button
-              onClick={() => { SoundEngine.selectLevel(); setDone(false); setScore(0); setStreak(0); setBestStreak(0); setRound(0); setResults([]); setFeedback(null); setUserInput(""); prevProblem.current = null; setProblem(generateProblem(opId, lvl)); }}
+              onClick={() => { SoundEngine.selectLevel(); setDone(false); setScore(0); setStreak(0); setBestStreak(0); setRound(0); setResults([]); setFeedback(null); setUserInput(""); setCoinsEarned(0); setCoinBursts([]); setDiamondsEarned(0); setDiamondBursts([]); prevProblem.current = null; setProblem(generateProblem(opId, lvl)); }}
               style={{ padding:"13px 24px", borderRadius:16, border:"none", background:op.gradient, color:"white", fontSize:16, fontWeight:700, fontFamily:"'Fredoka', sans-serif", cursor:"pointer", boxShadow:`0 4px 16px ${op.color}44` }}>
               Play Again
             </button>
@@ -331,6 +391,8 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
       padding:"20px 16px", position:"relative", overflow:"hidden",
     }}>
       {bursts.map(b => <StarBurst key={b.id} x={b.x} y={b.y} />)}
+      {coinBursts.map(b => <CoinBurst key={b.id} x={b.x} y={b.y} tx={b.tx} ty={b.ty} amount={b.amount} />)}
+      {diamondBursts.map(b => <DiamondBurst key={b.id} x={b.x} y={b.y} tx={b.tx} ty={b.ty} amount={b.amount} />)}
 
       <div style={{ textAlign:"center", maxWidth:420, width:"100%", animation:"fadeUp 0.4s ease" }}>
         {/* Top bar */}
@@ -346,9 +408,19 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
             <span style={{ fontWeight:700, color:op.color, fontSize:15 }}>{op.name}</span>
           </div>
 
-          <div style={{ display:"flex", alignItems:"center", gap:4 }}>
-            {streak >= 3 && <span style={{ fontSize:15 }}>🔥</span>}
-            <span style={{ fontWeight:600, color:"#f59e0b", fontSize:15 }}>{score}/{round + 1}</span>
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+            <div data-diamond-counter style={{ display:"flex", alignItems:"center", gap:3 }}>
+              <span style={{ fontSize:16 }}>💎</span>
+              <span style={{ fontWeight:600, color:"#818CF8", fontSize:16 }}>{diamondsEarned}</span>
+            </div>
+            <div data-coin-counter style={{ display:"flex", alignItems:"center", gap:3 }}>
+              <span style={{ fontSize:16 }}>🪙</span>
+              <span style={{ fontWeight:600, color:"#d97706", fontSize:16 }}>{coinsEarned}</span>
+            </div>
+            <div style={{ display:"flex", alignItems:"center", gap:4 }}>
+              {streak >= 3 && <span style={{ fontSize:17 }}>🔥</span>}
+              <span style={{ fontWeight:600, color:"#f59e0b", fontSize:17 }}>{score}/{round + 1}</span>
+            </div>
           </div>
         </div>
 
@@ -421,6 +493,53 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
         @keyframes popIn  { 0% { transform:scale(0); } 70% { transform:scale(1.2); } 100% { transform:scale(1); } }
         * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
       `}</style>
+    </div>
+  );
+}
+
+function CoinTally({ coinsEarned }) {
+  const [displayed, setDisplayed] = useState(0);
+  const lifetime = getCoins();
+
+  useEffect(() => {
+    if (coinsEarned <= 0) return;
+    const step = Math.max(1, Math.floor(coinsEarned / 15));
+    const interval = setInterval(() => {
+      setDisplayed(prev => {
+        const next = prev + step;
+        if (next >= coinsEarned) { clearInterval(interval); return coinsEarned; }
+        return next;
+      });
+    }, 35);
+    return () => clearInterval(interval);
+  }, [coinsEarned]);
+
+  return (
+    <div style={{
+      background:"rgba(255,215,0,0.12)", borderRadius:14, padding:"10px 18px",
+      display:"inline-flex", alignItems:"center", gap:8, marginBottom:12,
+      border:"2px solid rgba(245,158,11,0.25)", animation:"popIn 0.4s ease 0.3s both",
+    }}>
+      <span style={{ fontSize:22 }}>🪙</span>
+      <span style={{ fontSize:24, fontWeight:700, color:"#d97706" }}>+{displayed}</span>
+      <span style={{ fontSize:13, color:"#64748b", fontWeight:500 }}>coins</span>
+      <span style={{ fontSize:11, color:"#94a3b8", marginLeft:4 }}>({lifetime} total)</span>
+    </div>
+  );
+}
+
+function DiamondTally({ diamondsEarned }) {
+  const lifetime = getDiamonds();
+  return (
+    <div style={{
+      background:"rgba(129,140,248,0.12)", borderRadius:14, padding:"10px 18px",
+      display:"inline-flex", alignItems:"center", gap:8, marginBottom:12,
+      border:"2px solid rgba(129,140,248,0.25)", animation:"popIn 0.4s ease 0.6s both",
+    }}>
+      <span style={{ fontSize:22 }}>💎</span>
+      <span style={{ fontSize:24, fontWeight:700, color:"#6366f1" }}>+{diamondsEarned}</span>
+      <span style={{ fontSize:13, color:"#64748b", fontWeight:500 }}>diamond{diamondsEarned > 1 ? "s" : ""}</span>
+      <span style={{ fontSize:11, color:"#94a3b8", marginLeft:4 }}>({lifetime} total)</span>
     </div>
   );
 }
