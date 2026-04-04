@@ -47,8 +47,8 @@ export default function LevelSelect({ opId, onSelectLevel, onBack }) {
                 style={{
                   display:"flex", alignItems:"center", gap:16, padding:"16px 24px",
                   borderRadius:20, border:`3px solid ${l.color}33`,
-                  background:"rgba(255,255,255,0.75)", backdropFilter:"blur(8px)",
-                  cursor:"pointer", transition:"all 0.2s", boxShadow:`0 4px 16px ${l.color}22`,
+                  background:"rgba(255,255,255,0.92)", backdropFilter:"blur(8px)",
+                  cursor:"pointer", transition:"all 0.2s", boxShadow:`0 4px 10px rgba(0,0,0,0.06), 0 8px 24px ${l.color}20`,
                   animation:`fadeUp 0.4s ease ${i * 0.08}s both`,
                 }}
                 onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px) scale(1.02)"; e.currentTarget.style.borderColor = l.color; }}

@@ -12,7 +12,7 @@ export default function Homepage({ onPractice, onLearn }) {
   return (
     <div style={{
       minHeight:"100vh",
-      background:"linear-gradient(135deg, #fef9c3 0%, #fce7f3 25%, #dbeafe 50%, #d1fae5 75%, #fef3c7 100%)",
+      background:"linear-gradient(145deg, #fdf2d4 0%, #e4d2ed 100%)",
       fontFamily:"'Fredoka', sans-serif",
       display:"flex", flexDirection:"column", alignItems:"center",
       padding:"30px 16px", position:"relative", overflow:"hidden",
@@ -116,12 +116,12 @@ function OpCard({ op, delay, onPractice, onLearn, isFamily }) {
     <div style={{
       display:"flex", flexDirection:"column", alignItems:"center",
       gap:0, padding:"18px 12px 14px", borderRadius:24,
-      border:`3px solid ${op.color}22`,
+      border:`3px solid ${op.color}30`,
       background: isFamily
-        ? `linear-gradient(145deg, rgba(255,255,255,0.85), ${op.color}08)`
-        : "rgba(255,255,255,0.75)",
+        ? `linear-gradient(145deg, rgba(255,255,255,0.95), ${op.color}10)`
+        : "rgba(255,255,255,0.92)",
       backdropFilter:"blur(8px)",
-      boxShadow:`0 6px 24px ${op.color}15`,
+      boxShadow:`0 4px 12px rgba(0,0,0,0.06), 0 8px 28px ${op.color}18`,
       animation:`fadeUp 0.5s ease ${delay}s both`,
       transition:"all 0.25s",
     }}>

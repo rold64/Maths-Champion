@@ -21,8 +21,8 @@ export default function NumberPad({ onPress, disabled, showColon = false }) {
         <button key={n} onClick={() => press(String(n))} disabled={disabled}
           style={{
             ...base,
-            background: "linear-gradient(145deg, #ffffff, #e6e9ef)",
-            boxShadow: "3px 3px 8px #d1d5db, -3px -3px 8px #ffffff",
+            background: "linear-gradient(145deg, #ffffff, #e9ecf2)",
+            boxShadow: "2px 2px 6px rgba(0,0,0,0.1), -2px -2px 6px #ffffff, 0 4px 12px rgba(0,0,0,0.06)",
             color: "#334155", opacity: disabled ? 0.5 : 1,
           }}
           onMouseDown={(e) => { if (!disabled) e.currentTarget.style.transform = "scale(0.93)"; }}
@@ -33,21 +33,21 @@ export default function NumberPad({ onPress, disabled, showColon = false }) {
       <button onClick={() => press("backspace")} disabled={disabled} style={{
         ...base,
         background: "linear-gradient(145deg, #fde68a, #f59e0b)",
-        boxShadow: "3px 3px 8px #d1d5db, -3px -3px 8px #ffffff",
+        boxShadow: "2px 2px 6px rgba(0,0,0,0.1), -2px -2px 6px #ffffff, 0 4px 12px rgba(0,0,0,0.06)",
         color: "#78350f", fontSize: 18, opacity: disabled ? 0.5 : 1,
       }}>←</button>
       {showColon && (
         <button onClick={() => press(":")} disabled={disabled} style={{
           ...base,
           background: "linear-gradient(145deg, #bfdbfe, #60a5fa)",
-          boxShadow: "3px 3px 8px #d1d5db, -3px -3px 8px #ffffff",
+          boxShadow: "2px 2px 6px rgba(0,0,0,0.1), -2px -2px 6px #ffffff, 0 4px 12px rgba(0,0,0,0.06)",
           color: "#1e3a8a", fontSize: 26, opacity: disabled ? 0.5 : 1,
         }}>:</button>
       )}
       <button onClick={() => press("submit")} disabled={disabled} style={{
         ...base,
         background: "linear-gradient(145deg, #86efac, #22c55e)",
-        boxShadow: "3px 3px 8px #d1d5db, -3px -3px 8px #ffffff",
+        boxShadow: "2px 2px 6px rgba(0,0,0,0.1), -2px -2px 6px #ffffff, 0 4px 12px rgba(0,0,0,0.06)",
         color: "#14532d", fontSize: 18, opacity: disabled ? 0.5 : 1,
       }}>✓</button>
     </div>

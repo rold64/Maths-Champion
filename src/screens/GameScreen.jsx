@@ -441,9 +441,9 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
 
         {/* Question card */}
         <div style={{
-          background:"rgba(255,255,255,0.8)", backdropFilter:"blur(8px)",
+          background:"rgba(255,255,255,0.92)", backdropFilter:"blur(8px)",
           borderRadius:24, padding:"20px 18px", marginBottom:14,
-          boxShadow:"0 8px 32px rgba(0,0,0,0.06)",
+          boxShadow:"0 4px 10px rgba(0,0,0,0.06), 0 10px 32px rgba(0,0,0,0.08)",
           border: feedback === "correct" ? "3px solid #22c55e" : feedback === "wrong" ? "3px solid #ef4444" : "3px solid transparent",
           transition:"border-color 0.3s",
         }}>
