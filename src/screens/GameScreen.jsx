@@ -414,7 +414,7 @@ export default function GameScreen({ opId, levelIdx, onHome, onLevelSelect }) {
               <span style={{ fontWeight:600, color:"#818CF8", fontSize:16 }}>{diamondsEarned}</span>
             </div>
             <div data-coin-counter style={{ display:"flex", alignItems:"center", gap:3 }}>
-              <span style={{ fontSize:16 }}>🪙</span>
+              <div style={{ width:16, height:16, borderRadius:"50%", background:"linear-gradient(135deg, #fcd34d, #f59e0b)", border:"2px solid #d97706", boxShadow:"0 1px 3px rgba(217,119,6,0.4)", flexShrink:0 }} />
               <span style={{ fontWeight:600, color:"#d97706", fontSize:16 }}>{coinsEarned}</span>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:4 }}>
@@ -520,7 +520,7 @@ function CoinTally({ coinsEarned }) {
       display:"inline-flex", alignItems:"center", gap:8, marginBottom:12,
       border:"2px solid rgba(245,158,11,0.25)", animation:"popIn 0.4s ease 0.3s both",
     }}>
-      <span style={{ fontSize:22 }}>🪙</span>
+      <div style={{ width:22, height:22, borderRadius:"50%", background:"linear-gradient(135deg, #fcd34d, #f59e0b)", border:"2.5px solid #d97706", boxShadow:"0 2px 6px rgba(217,119,6,0.4)", flexShrink:0 }} />
       <span style={{ fontSize:24, fontWeight:700, color:"#d97706" }}>+{displayed}</span>
       <span style={{ fontSize:13, color:"#64748b", fontWeight:500 }}>coins</span>
       <span style={{ fontSize:11, color:"#94a3b8", marginLeft:4 }}>({lifetime} total)</span>

@@ -45,7 +45,7 @@ export default function Homepage({ onPractice, onLearn }) {
           }}>
             {getCoins() > 0 && (
               <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-                <span style={{ fontSize:26 }}>🪙</span>
+                <div style={{ width:26, height:26, borderRadius:"50%", background:"linear-gradient(135deg, #fcd34d, #f59e0b)", border:"2.5px solid #d97706", boxShadow:"0 2px 6px rgba(217,119,6,0.4)", flexShrink:0 }} />
                 <span style={{ fontSize:24, fontWeight:700, color:"#d97706" }}>{getCoins()}</span>
               </div>
             )}
