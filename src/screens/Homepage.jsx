@@ -111,6 +111,7 @@ export default function Homepage({ onPractice, onLearn }) {
           .core-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
           .family-grid { grid-template-columns:1fr; }
           .explore-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+          .op-card-actions { flex-direction:column; }
         }
 
         @media (max-width:380px) {
@@ -158,7 +159,7 @@ function OpCard({ op, delay, onPractice, onLearn, isFamily }) {
       <div style={{ fontFamily:"Arial, sans-serif", fontSize:14, lineHeight:1.35, color:"#475569", fontWeight:500, marginBottom:12, textAlign:"center" }}>{op.tagline}</div>
 
       {/* Learn + Practice buttons */}
-      <div style={{ display:"flex", gap:6, width:"100%" }}>
+      <div className="op-card-actions" style={{ display:"flex", gap:6, width:"100%" }}>
         {op.id !== "tenframe" && (
           <button
             onClick={() => { SoundEngine.navigate(); onLearn(op.id); }}
@@ -166,12 +167,13 @@ function OpCard({ op, delay, onPractice, onLearn, isFamily }) {
               flex:1, padding:"8px 4px", borderRadius:12, border:`2px solid ${op.color}44`,
               background:"rgba(255,255,255,0.8)", cursor:"pointer",
               fontFamily:"Arial, sans-serif", fontSize:13, fontWeight:700,
-              color:op.color, transition:"all 0.2s",
+              color:op.color, transition:"all 0.2s", display:"flex",
+              alignItems:"center", justifyContent:"center", gap:4, whiteSpace:"nowrap",
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = `${op.color}15`; e.currentTarget.style.borderColor = op.color; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.8)"; e.currentTarget.style.borderColor = `${op.color}44`; }}
           >
-            📖 Learn
+            <span aria-hidden="true">📖</span><span>Learn</span>
           </button>
         )}
         <button
@@ -181,11 +183,12 @@ function OpCard({ op, delay, onPractice, onLearn, isFamily }) {
             background:op.gradient, cursor:"pointer",
             fontFamily:"Arial, sans-serif", fontSize:13, fontWeight:700,
             color:"white", boxShadow:`0 3px 10px ${op.color}44`, transition:"all 0.2s",
+            display:"flex", alignItems:"center", justifyContent:"center", gap:4, whiteSpace:"nowrap",
           }}
           onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.04)"; }}
           onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
         >
-          ⚡ Practice
+          <span aria-hidden="true">⚡</span><span>Practice</span>
         </button>
       </div>
     </div>
