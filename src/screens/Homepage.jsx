@@ -138,12 +138,9 @@ function OpCard({ op, delay, onPractice, onLearn, isFamily }) {
     <div style={{
       display:"flex", flexDirection:"column", alignItems:"center",
       gap:0, padding:"18px 12px 14px", borderRadius:18,
-      border:"1px solid rgba(148,163,184,0.28)",
-      background: isFamily
-        ? "rgba(246,248,251,0.82)"
-        : "rgba(247,249,252,0.78)",
-      backdropFilter:"blur(8px)",
-      boxShadow:"0 8px 22px rgba(51,65,85,0.08), inset 0 1px 0 rgba(255,255,255,0.55)",
+      border:"1px solid #dce4ee",
+      background:"#fff",
+      boxShadow:"0 4px 12px rgba(51,65,85,0.05)",
       animation:`fadeUp 0.5s ease ${delay}s both`,
       transition:"all 0.25s",
     }}>
@@ -157,8 +154,8 @@ function OpCard({ op, delay, onPractice, onLearn, isFamily }) {
         fontSize:26, border:`2px solid ${op.color}22`, marginBottom:6,
       }}>{op.emoji}</div>
 
-      <div style={{ fontSize:16, fontWeight:700, color:"#1e293b", marginBottom:2, textAlign:"center" }}>{op.name}</div>
-      <div style={{ fontSize:11, color:"#94a3b8", fontWeight:500, marginBottom:12, textAlign:"center" }}>{op.tagline}</div>
+      <div style={{ fontFamily:"Arial, sans-serif", fontSize:20, fontWeight:700, color:"#1b2b5b", marginBottom:2, textAlign:"center" }}>{op.name}</div>
+      <div style={{ fontFamily:"Arial, sans-serif", fontSize:14, lineHeight:1.35, color:"#475569", fontWeight:500, marginBottom:12, textAlign:"center" }}>{op.tagline}</div>
 
       {/* Learn + Practice buttons */}
       <div style={{ display:"flex", gap:6, width:"100%" }}>
@@ -168,7 +165,7 @@ function OpCard({ op, delay, onPractice, onLearn, isFamily }) {
             style={{
               flex:1, padding:"8px 4px", borderRadius:12, border:`2px solid ${op.color}44`,
               background:"rgba(255,255,255,0.8)", cursor:"pointer",
-              fontFamily:"'Fredoka', sans-serif", fontSize:12, fontWeight:600,
+              fontFamily:"Arial, sans-serif", fontSize:13, fontWeight:700,
               color:op.color, transition:"all 0.2s",
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = `${op.color}15`; e.currentTarget.style.borderColor = op.color; }}
@@ -182,7 +179,7 @@ function OpCard({ op, delay, onPractice, onLearn, isFamily }) {
           style={{
             flex:1, padding:"8px 4px", borderRadius:12, border:"none",
             background:op.gradient, cursor:"pointer",
-            fontFamily:"'Fredoka', sans-serif", fontSize:12, fontWeight:700,
+            fontFamily:"Arial, sans-serif", fontSize:13, fontWeight:700,
             color:"white", boxShadow:`0 3px 10px ${op.color}44`, transition:"all 0.2s",
           }}
           onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.04)"; }}
