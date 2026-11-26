@@ -4,9 +4,19 @@ A fun, interactive maths training app for kids (ages 5–8). Built with React + 
 
 ## Features
 
-- **10 Challenge Modes**: Addition, Subtraction, Multiplication, Division, Add↔Sub Fact Families, Mul↔Div Fact Families, Number Bonds, Place Value, Fractions, Telling Time
-- **Learn + Practice** for every mode — step-through teaching slides before jumping into practice
+- **11 Challenge Modes**: Addition, Subtraction, Multiplication, Division, Add↔Sub Fact Families, Mul↔Div Fact Families, Number Bonds, Number Frame, Place Value, Fractions, Telling Time
+- **Learn + Practice** for standard modes — step-through teaching slides before jumping into practice
 - **4 Difficulty Levels** per mode: Starter (1–5) → Explorer (1–10) → Champion (1–20) → Legend (1–50)
+- **Number Frame activities**:
+  - Count a target quantity
+  - Subitize a quick image, then rebuild it
+  - Add with two addend frames and a total frame
+  - Make 10 by completing a fixed starting amount
+  - Build a missing number bond part
+  - Compare two frames using Left, Right, or Equal
+- **Ten-cell manipulative** — an interactive 2-by-5 frame with direct counter selection
+- **Responsive homepage** — section-based grids adapt from five-across core cards to tablet and phone layouts
+- **Cohesive visual system** — cool-neutral backgrounds and translucent cards keep the activity colors as clear accents
 - **Smart Visual Aids**:
   - Number lines with directional arc arrows for addition and subtraction
   - Dienes place-value blocks (hundreds, tens, ones)
@@ -76,7 +86,7 @@ Works offline after first visit.
 src/
 ├── App.jsx                  # Root router
 ├── data/
-│   ├── operations.js        # All 10 operation configs
+│   ├── operations.js        # All 11 operation configs
 │   └── levels.js            # 4 difficulty tiers
 ├── utils/
 │   ├── generateProblem.js   # Problem generators
@@ -88,9 +98,11 @@ src/
 │   ├── Homepage.jsx         # Mode selection grid
 │   ├── LevelSelect.jsx      # Difficulty picker
 │   ├── GameScreen.jsx       # 10-round game loop
-│   └── TeachScreen.jsx      # Step-through learning mode
+│   ├── TeachScreen.jsx      # Step-through learning mode
+│   └── TenFrameScreen.jsx   # Number Frame activities
 └── components/
     ├── VisualHelper.jsx      # Routes to correct visual per mode
+    ├── TenFrameBoard.jsx     # Interactive fixed 2×5 ten-frame board
     ├── NumberPad.jsx
     ├── ProgressBar.jsx
     ├── StarBurst.jsx
