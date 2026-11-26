@@ -340,7 +340,7 @@ export default function TenFrameScreen({ opId, levelIdx, onHome, onLevelSelect }
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(145deg, #ecfeff 0%, #fdf2d4 100%)", fontFamily: "'Fredoka', sans-serif", display: "flex", justifyContent: "center", padding: "24px 16px" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(145deg, #edf2f7 0%, #dfe5ec 100%)", fontFamily: "'Fredoka', sans-serif", display: "flex", justifyContent: "center", padding: "24px 16px" }}>
       <div style={{ width: "100%", maxWidth: 560 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
           <button onClick={() => { SoundEngine.navigate(); onLevelSelect(); }} style={{ background: "rgba(255,255,255,0.7)", border: "none", borderRadius: 12, padding: "8px 14px", fontFamily: "'Fredoka', sans-serif", fontWeight: 600, color: "#64748b", cursor: "pointer" }}>
